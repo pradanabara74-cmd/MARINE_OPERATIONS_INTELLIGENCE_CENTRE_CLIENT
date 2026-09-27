@@ -909,7 +909,7 @@ with st.sidebar:
         "MENU",
         [
             "Dashboard",
-            "Fleet 21",
+            "Fleet",
             "Crew 200",
             "Voyage Operations",
             "HSSE / DPA",
@@ -930,9 +930,9 @@ with st.sidebar:
     st.divider()
 
     st.metric(
-        "Fleet",
-        "21"
-    )
+    "Fleet",
+    len(FLEET)
+)
 
     st.metric(
         "Crew Master",
@@ -1458,9 +1458,9 @@ if menu == "Dashboard":
 # FLEET 21 V2 — OPERATIONAL INTELLIGENCE
 # ============================================================
 
-elif menu == "Fleet 21":
+elif menu == "Fleet":
 
-    st.header("🚢 Fleet 21")
+    st.header("🚢 Fleet")
 
     st.caption(
         "Fleet operational intelligence berdasarkan data aktual "
@@ -1868,26 +1868,24 @@ elif menu == "Fleet 21":
 
     total_vessels = len(fleet_intelligence_df)
 
+if "Risk" in fleet_intelligence_df.columns:
+    risk_series = fleet_intelligence_df["Risk"].astype(str)
+
     high_risk = int(
-        fleet_intelligence_df["Risk"]
-        .astype(str)
-        .str.contains("HIGH", na=False)
-        .sum()
+        risk_series.str.contains("HIGH", case=False, na=False).sum()
     )
 
     medium_risk = int(
-        fleet_intelligence_df["Risk"]
-        .astype(str)
-        .str.contains("MEDIUM", na=False)
-        .sum()
+        risk_series.str.contains("MEDIUM", case=False, na=False).sum()
     )
 
     data_gap = int(
-        fleet_intelligence_df["Risk"]
-        .astype(str)
-        .str.contains("Belum dinilai", na=False)
-        .sum()
+        risk_series.str.contains("Belum dinilai", case=False, na=False).sum()
     )
+else:
+    high_risk = 0
+    medium_risk = 0
+    data_gap = 0
 
 
     c1, c2, c3, c4 = st.columns(4)
