@@ -931,7 +931,7 @@ with st.sidebar:
 
     st.metric(
     "Fleet",
-    len(FLEET)
+    "Client Fleet"
 )
 
     st.metric(
